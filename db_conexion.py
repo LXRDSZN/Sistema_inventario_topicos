@@ -32,6 +32,7 @@ if __name__ == "__main__":
     conexion = conexion_base_de_datos()
     if conexion:
         # Realizamos una consulta
+        
         consulta = "SELECT * FROM Administrador;" 
         resultados = ejecutar_consulta(conexion, consulta)
         if resultados:
