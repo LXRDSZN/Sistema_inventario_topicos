@@ -3,19 +3,36 @@ from tkinter import ttk, messagebox
 from tkinter.font import BOLD
 import util.generic as utl
 from forms.form_master import MasterPanel
+from db_conexion import conexion_base_de_datos, ejecutar_consulta
 
 class App:
     
     
     def verificar(self):
         usu = self.usuario.get()
-        password = self.password.get()        
-        if(usu == "root" and password == "1234") :
-            self.ventana.destroy()
-            MasterPanel()
-        else:
-            messagebox.showerror(message="La contraseña no es correcta",title="Mensaje")           
-                      
+        password = self.password.get() 
+
+        #Realizamos la conexion a la base de datos 
+        conexion = conexion_base_de_datos()
+        if conexion:
+            try:
+            # Consultar la base de datos para verificar las credenciales
+                consulta = "SELECT * FROM Administrador WHERE CURP_Administrador = %s AND Contrasena = %s"
+                parametros = (usu, password)
+                resultados = ejecutar_consulta(conexion, consulta, parametros)
+
+            # Si se encuentra una coincidencia, las credenciales son válidas
+                if resultados:
+                    print("Credenciales válidas. Iniciando sesión...")
+                    self.ventana.destroy()
+                    MasterPanel()
+                else:
+                    # Si no hay coincidencia, mostrar un mensaje de error
+                    messagebox.showerror(message="La contraseña no es correcta", title="Mensaje")
+            finally:
+                # Cerrar la conexión a la base de datos
+                conexion.close()
+
     def __init__(self):        
         self.ventana = tk.Tk()                             
         self.ventana.title('Inicio de sesion')

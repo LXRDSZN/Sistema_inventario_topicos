@@ -18,16 +18,18 @@ def conexion_base_de_datos():
         print(f"Error al conectar a la base de datos: {error}")
         return None
 
-def ejecutar_consulta(conexion, consulta):
+def ejecutar_consulta(conexion, consulta, parametros=None):
     try:
         cursor = conexion.cursor()
-        cursor.execute(consulta)
+        if parametros:
+            cursor.execute(consulta, parametros)
+        else:
+            cursor.execute(consulta)
         resultados = cursor.fetchall()
         return resultados
     except mysql.connector.Error as error:
         print(f"Error al ejecutar la consulta: {error}")
         return None
-
 if __name__ == "__main__":
     conexion = conexion_base_de_datos()
     if conexion:
