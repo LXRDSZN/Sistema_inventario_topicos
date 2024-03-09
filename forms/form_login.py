@@ -4,6 +4,7 @@ from tkinter.font import BOLD
 import util.generic as utl
 from forms.form_master import MasterPanel
 from db_conexion import conexion_base_de_datos, ejecutar_consulta
+from forms.System_Main import System_main
 
 class App:
     
@@ -25,7 +26,8 @@ class App:
                 if resultados:
                     print("Credenciales válidas. Iniciando sesión...")
                     self.ventana.destroy()
-                    MasterPanel()
+                    System_main()
+                   
                 else:
                     # Si no hay coincidencia, mostrar un mensaje de error
                     messagebox.showerror(message="La contraseña no es correcta", title="Mensaje")
